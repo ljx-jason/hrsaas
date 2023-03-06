@@ -1,3 +1,30 @@
+import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login } from '@/api/user'
+const state = {
+  token: getToken()
+}
+const mutation = {
+  setToken: (state, token) => {
+    state.token = token
+    setToken(token)
+  },
+  removeToken: (state) => {
+    state.token = null
+    removeToken()
+  }
+}
+const actions = {
+  login: async(context, data) => {
+    const res = await login(data)
+    context.commit('setToken', res)
+  }
+}
+export default {
+  namespaced: true,
+  state,
+  mutation,
+  actions
+}
 // import { login, logout, getInfo } from '@/api/user'
 // import { getToken, setToken, removeToken } from '@/utils/auth'
 // import { resetRouter } from '@/router'
@@ -87,11 +114,4 @@
 //     })
 //   }
 // }
-
-export default {
-  namespaced: true,
-  state: {},
-  mutation: {},
-  actions: {}
-}
 

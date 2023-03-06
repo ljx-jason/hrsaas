@@ -1,7 +1,22 @@
+import { Message } from 'element-ui'
 import axios from 'axios'
-const service = axios.create()
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_URL,
+  timeout: 5000
+})
 service.interceptors.request.use()
-service.interceptors.response.use()
+service.interceptors.response.use(response => {
+  const { success, message, data } = response.data
+  if (success) {
+    return data
+  } else {
+    Message.error(message)
+    return Promise.reject(new Error(message))
+  }
+}, error => {
+  Message.error(error)
+  return Promise.reject(error)
+})
 export default service
 // import axios from 'axios'
 // import { MessageBox, Message } from 'element-ui'
